@@ -50,6 +50,7 @@ public class ProdutoAdapter extends BaseAdapter {
         Produto produto = (Produto) getItem(position);
         txtNome.setText(produto.getNome());
         txtPreco.setText(String.valueOf(produto.getPreco()));
+
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +63,7 @@ public class ProdutoAdapter extends BaseAdapter {
                 Toast.makeText(context, "Editando", Toast.LENGTH_SHORT).show();
             }
         });
+
         return convertView;
     }
 }

@@ -10,14 +10,6 @@ public class Produto implements Serializable {
     private int estoque;
     private String descricao;
 
-    public Produto(int id, String nome, double preco, int estoque, String descricao) {
-        this.id = id;
-        this.nome = nome;
-        this.preco = preco;
-        this.estoque = estoque;
-        this.descricao = descricao;
-    }
-
     public int getId() {
         return id;
     }
