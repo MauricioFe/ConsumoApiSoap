@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CadastrarProdutoActivity">
+
+    <EditText
+        android:id="@+id/cadastrar_produto_txv_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Nome do produto"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/cadastrar_produto_txv_preco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Preço"
+        android:inputType="numberDecimal"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/cadastrar_produto_txv_estoque"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Quantidade em estoque"
+        android:inputType="number"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/cadastrar_produto_txv_descricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Descrição"
+        android:inputType="textMultiLine"
+        android:layout_margin="8dp"/>
+
+    <Button
+        android:id="@+id/cadastrar_produto_btn_salvar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_margin="8dp"/>
+
+</LinearLayout>

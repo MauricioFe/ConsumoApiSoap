@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "http://192.168.0.109:50210/ProdutoService.asmx";
     ListView listaProduto;
     FloatingActionButton btnAdicionar;
+    List<Produto> produtoList;
+    int idProduto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +52,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listaProduto = findViewById(R.id.list_produtos);
         btnAdicionar = findViewById(R.id.list_produtos_fab_add);
+        produtoList = new ArrayList<>();
         getProdutos();
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "bacon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), CadastrarProdutoActivity.class);
+                idProduto++;
+                intent.putExtra("idProduto", idProduto);
+                startActivity(intent);
             }
         });
     }
@@ -76,9 +82,12 @@ public class MainActivity extends AppCompatActivity {
                     while ((line = reader.readLine()) != null) {
                         stringBuilder.append(line);
                     }
-
-                    ProdutoAdapter adapter = new ProdutoAdapter(getApplicationContext(), ParseXml(stringBuilder.toString()));
+                    produtoList = ParseXml(stringBuilder.toString());
+                    ProdutoAdapter adapter = new ProdutoAdapter(getApplicationContext(), produtoList);
                     listaProduto.setAdapter(adapter);
+                    for (Produto item : produtoList) {
+                        idProduto = item.getId();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
