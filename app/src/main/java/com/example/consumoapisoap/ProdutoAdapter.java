@@ -1,6 +1,7 @@
 package com.example.consumoapisoap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class ProdutoAdapter extends BaseAdapter {
     Context context;
-    List<Produto> produtoList;
+    private List<Produto> produtoList;
 
     public ProdutoAdapter(Context context, List<Produto> produtoList) {
         this.context = context;
@@ -37,7 +38,10 @@ public class ProdutoAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return produtoList.get(position).getId();
     }
-
+    public void updateProdutos(List<Produto> produtos) {
+        produtoList = produtos;
+        notifyDataSetChanged();
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_produto, parent, false);
@@ -60,7 +64,10 @@ public class ProdutoAdapter extends BaseAdapter {
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Editando", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, CadastrarProdutoActivity.class);
+                intent.putExtra("produto", produto);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
 

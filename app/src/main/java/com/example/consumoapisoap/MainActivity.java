@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton btnAdicionar;
     List<Produto> produtoList;
     int idProduto;
+    ProdutoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         btnAdicionar = findViewById(R.id.list_produtos_fab_add);
         produtoList = new ArrayList<>();
         getProdutos();
+        adapter = new ProdutoAdapter(getApplicationContext(), produtoList);
+        listaProduto.setAdapter(adapter);
+        for (Produto item : produtoList) {
+            idProduto = item.getId();
+        }
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,12 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     while ((line = reader.readLine()) != null) {
                         stringBuilder.append(line);
                     }
-                    produtoList = ParseXml(stringBuilder.toString());
-                    ProdutoAdapter adapter = new ProdutoAdapter(getApplicationContext(), produtoList);
-                    listaProduto.setAdapter(adapter);
-                    for (Produto item : produtoList) {
-                        idProduto = item.getId();
-                    }
+                    adapter.updateProdutos(ParseXml(stringBuilder.toString()));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

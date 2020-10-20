@@ -39,7 +39,24 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("produto")) {
-           Produto produto = (Produto) intent.getSerializableExtra("Produto");
+            Produto produto = (Produto) intent.getSerializableExtra("produto");
+            int id = produto.getId();
+            edtNome.setText(produto.getNome());
+            edtPreco.setText(String.valueOf(produto.getPreco()));
+            edtEstoque.setText(produto.getEstoque());
+            edtDescricao.setText(produto.getDescricao());
+            btnSalvar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Produto produto = new Produto();
+                    produto.setId(id);
+                    produto.setNome(edtNome.getText().toString());
+                    produto.setPreco(Double.parseDouble(edtPreco.getText().toString()));
+                    produto.setEstoque(Integer.parseInt(edtEstoque.getText().toString()));
+                    produto.setDescricao(edtDescricao.getText().toString());
+                    //editaProduto(produto);
+                }
+            });
         } else if (intent.hasExtra("idProduto")) {
             int id = intent.getIntExtra("idProduto", 0);
             Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
@@ -58,9 +75,37 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
         }
     }
 
+    private void editaProduto(Produto produto) {
+        String params = "Id=" + produto.getId() + "&Nome=" + produto.getNome() + "&Preco=" + produto.getPreco() +
+                "&Estoque=" + produto.getEstoque() + "&Descricao=" + produto.getDescricao();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                BufferedReader reader;
+                OutputStreamWriter writer;
+                try {
+                    URL url = new URL(MainActivity.BASE_URL+"/Put");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("charset", "UTF-8");
+
+                    writer = new OutputStreamWriter(conn.getOutputStream());
+                    writer.write(params);
+                    writer.flush();
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
     private void novoProduto(Produto produto) {
-        String params = "Id="+produto.getId()+"&Nome="+produto.getNome()+"&Preco="+produto.getPreco()+
-                "&Estoque="+produto.getEstoque()+"&Descricao="+produto.getDescricao();
+        String params = "Id=" + produto.getId() + "&Nome=" + produto.getNome() + "&Preco=" + produto.getPreco() +
+                "&Estoque=" + produto.getEstoque() + "&Descricao=" + produto.getDescricao();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
