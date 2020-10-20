@@ -6,6 +6,7 @@ import androidx.core.view.accessibility.AccessibilityViewCommand;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +16,13 @@ import com.example.consumoapisoap.models.Produto;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CadastrarProdutoActivity extends AppCompatActivity {
 
@@ -34,19 +39,19 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("produto")) {
-            Toast.makeText(this, "editar", Toast.LENGTH_SHORT).show();
+           Produto produto = (Produto) intent.getSerializableExtra("Produto");
         } else if (intent.hasExtra("idProduto")) {
             int id = intent.getIntExtra("idProduto", 0);
             Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
-            Produto produto = new Produto();
-            produto.setId(id);
-            produto.setNome(edtNome.getText().toString());
-            produto.setPreco(Double.parseDouble(edtNome.getText().toString()));
-            produto.setEstoque(Integer.parseInt(edtEstoque.getText().toString()));
-            produto.setDescricao(edtDescricao.getText().toString());
             btnSalvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Produto produto = new Produto();
+                    produto.setId(id);
+                    produto.setNome(edtNome.getText().toString());
+                    produto.setPreco(Double.parseDouble(edtPreco.getText().toString()));
+                    produto.setEstoque(Integer.parseInt(edtEstoque.getText().toString()));
+                    produto.setDescricao(edtDescricao.getText().toString());
                     novoProduto(produto);
                 }
             });
@@ -54,18 +59,32 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
     }
 
     private void novoProduto(Produto produto) {
+        String params = "Id="+produto.getId()+"&Nome="+produto.getNome()+"&Preco="+produto.getPreco()+
+                "&Estoque="+produto.getEstoque()+"&Descricao="+produto.getDescricao();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                BufferedReader reader;
+                BufferedReader reader = null;
+                OutputStreamWriter writer = null;
                 try {
-                    URL url = new URL(MainActivity.BASE_URL+"/Post");
+                    URL url = new URL(MainActivity.BASE_URL + "/Post");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "text/xml");
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     conn.setRequestProperty("charset", "UTF-8");
 
+                    writer = new OutputStreamWriter(conn.getOutputStream());
+                    writer.write(params);
+                    writer.flush();
+                    String line;
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
+                    Log.i("Code Response", "postDados: " + conn.getResponseCode());
 
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
