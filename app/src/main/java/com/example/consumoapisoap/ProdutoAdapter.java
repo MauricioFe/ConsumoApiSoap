@@ -109,15 +109,12 @@ public class ProdutoAdapter extends BaseAdapter {
                     writer.write(params);
                     writer.flush();
                     new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                    produtoList.remove(position);
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         });
+        produtoList.remove(position);
         notifyDataSetChanged();
     }
 }

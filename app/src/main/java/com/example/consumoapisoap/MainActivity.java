@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         getProdutos();
         adapter = new ProdutoAdapter(MainActivity.this, produtoList);
         listaProduto.setAdapter(adapter);
-        for (Produto item : produtoList) {
-            idProduto = item.getId();
-        }
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (Produto item : produtoList) {
+                    idProduto = item.getId();
+                }
                 Intent intent = new Intent(getApplicationContext(), CadastrarProdutoActivity.class);
                 idProduto++;
                 intent.putExtra("idProduto", idProduto);
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     while ((line = reader.readLine()) != null) {
                         stringBuilder.append(line);
                     }
+                    produtoList = ParseXml(stringBuilder.toString());
                     adapter.updateProdutos(ParseXml(stringBuilder.toString()));
 
                 } catch (IOException e) {
