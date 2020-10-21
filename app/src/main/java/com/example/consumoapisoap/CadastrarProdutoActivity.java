@@ -43,7 +43,7 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
             int id = produto.getId();
             edtNome.setText(produto.getNome());
             edtPreco.setText(String.valueOf(produto.getPreco()));
-            edtEstoque.setText(produto.getEstoque());
+            edtEstoque.setText(String.valueOf(produto.getEstoque()));
             edtDescricao.setText(produto.getDescricao());
             btnSalvar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -54,7 +54,7 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                     produto.setPreco(Double.parseDouble(edtPreco.getText().toString()));
                     produto.setEstoque(Integer.parseInt(edtEstoque.getText().toString()));
                     produto.setDescricao(edtDescricao.getText().toString());
-                    //editaProduto(produto);
+                    editaProduto(produto);
                 }
             });
         } else if (intent.hasExtra("idProduto")) {

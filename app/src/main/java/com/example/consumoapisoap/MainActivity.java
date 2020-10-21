@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listaProduto;
     FloatingActionButton btnAdicionar;
     List<Produto> produtoList;
-    int idProduto;
+    int idProduto = 0;
     ProdutoAdapter adapter;
 
     @Override
