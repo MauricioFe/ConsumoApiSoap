@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdicionar = findViewById(R.id.list_produtos_fab_add);
         produtoList = new ArrayList<>();
         getProdutos();
-        adapter = new ProdutoAdapter(getApplicationContext(), produtoList);
+        adapter = new ProdutoAdapter(MainActivity.this, produtoList);
         listaProduto.setAdapter(adapter);
         for (Produto item : produtoList) {
             idProduto = item.getId();
